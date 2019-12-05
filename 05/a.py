@@ -2,6 +2,7 @@ from __future__ import annotations
 import pprint
 import re
 from dataclasses import dataclass, field
+from functools import reduce
 from typing import List, Dict, Union, Callable
 from tqdm import trange
 
@@ -13,6 +14,8 @@ class Computer:
     memory: List[int] = field(default_factory=list)
     _position: int = 0
     broken: bool = field(default=False, init=False)
+    mode: List[int] = field(default_factory=list)
+    args: List[int] = field(default_factory=list)
 
     @property
     def position(self) -> int:
@@ -27,25 +30,79 @@ class Computer:
         self.position += 1
         return rv
 
+    def get_mode(self) -> int:
+        return self.mode.pop(0)
+
+    def get_args(self):
+        while self.mode:
+            mode = self.mode.pop(0)
+            if mode == 0:
+                read = self.read()
+                read_ = self.memory[read]
+                self.args.append(read_)
+            elif mode == 1:
+                self.args.append(self.read())
+            else:
+                raise RuntimeError(f'{mode} is not a valid mode')
+
+    def add(self):
+        if not self.args:
+            raise RuntimeError('Need arguments to add')
+        position = self.read()
+        self.memory[position] = reduce(lambda x, y: x + y, self.args)
+        # print(f'writing to {position}, {self.memory[position]}')
+        self.args = []
+
+    def multiply(self):
+        if not self.args:
+            raise RuntimeError('Need arguments to multiply')
+        position = self.read()
+        self.memory[position] = reduce(lambda x, y: x * y, self.args)
+        # print(f'writing to {position}, {self.memory[position]}')
+        self.args = []
+
     def halt(self):
         self.broken = True
 
-    def add(self):
-        a = self.read()
-        b = self.read()
+    def _input(self):
         position = self.read()
-        self.memory[position] = self.memory[a] + self.memory[b]
 
-    def multiply(self):
-        a = self.read()
-        b = self.read()
-        position = self.read()
-        self.memory[position] = self.memory[a] * self.memory[b]
+        # i = int(input('>'))
+        i = 1
+        self.memory[position] = i
+        # print(f'writing {self.memory[position]} to {position}')
+        self.args = []
+
+    def output(self):
+        position = self.args[0]
+        print(position)
+        # print(f'reading {self.memory[position]} from {position}')
+        self.args = []
 
     def iterate(self):
-        op = self.read()
+        op = self.get_operation()
+        # print(f'doing {op} with modes {self.mode}', end=' ')
+        self.get_args()
+        # print(f'args {self.args}')
         command = self.mapping[op]
         return command(self)
+
+    def get_operation(self) -> int:
+        op_code = self.read()
+        if op_code in self.mapping.keys():
+            # print(f'found {op_code} in {self.mapping.keys()}')
+            op = op_code
+        else:
+            sop_code = str(op_code)
+            args = list(sop_code[:-2])
+            op = int(sop_code[-2:])
+            while args:
+                self.mode.append(int(args.pop()))
+
+        while len(self.mode) < self.num_args[op]:
+            self.mode.append(0)
+
+        return op
 
     def run(self):
         while not self.broken:
@@ -54,7 +111,17 @@ class Computer:
     mapping = {
         1: add,
         2: multiply,
+        3: _input,
+        4: output,
         99: halt
+    }
+
+    num_args = {
+        1: 2,
+        2: 2,
+        3: 0,
+        4: 1,
+        99: 0
     }
 
 
@@ -71,27 +138,19 @@ def get_input(data: str = None):
     return Computer(memory=data)
 
 
+def solve(data=None) -> int:
+    memory = soft_solve(data)
+    return memory[0]
+
+
 def soft_solve(data):
     c = get_input(data)
     c.run()
     return c.memory
 
 
-def solve(data=None, noun=12, verb=2) -> int:
-    c = get_input(data)
-    c.memory[1] = noun
-    c.memory[2] = verb
-    c.run()
-    return c.memory[0]
-
-
 def main():
-    for noun in trange(100):
-        for verb in range(100):
-            v = solve(noun=noun, verb=verb)
-            if v == 19690720:
-                print((100 * noun) + verb)
-                return
+    solve()
 
 
 if __name__ == '__main__':

@@ -1,27 +1,15 @@
 import importlib
 import unittest
 
-a_solve = getattr(importlib.import_module('05.a'), 'solve')
+a_solve = getattr(importlib.import_module('05.a'), 'soft_solve')
+
+
 # b_solve = getattr(importlib.import_module('05.b'), 'test')
 
 
 class TestAExamples(unittest.TestCase):
     def test_one(self):
-        self.assertTrue(a_solve('111111'))
+        self.assertListEqual(a_solve('1002,4,3,4,33'), [1002, 4, 3, 4, 99])
 
     def test_two(self):
-        self.assertFalse(a_solve('223450'))
-
-    def test_three(self):
-        self.assertFalse(a_solve('123789'))
-
-
-class TestBExamples(unittest.TestCase):
-    def test_one(self):
-        self.assertTrue(b_solve('112233'))
-
-    def test_two(self):
-        self.assertFalse(b_solve('123444'))
-
-    def test_three(self):
-        self.assertTrue(b_solve('111122'))
+        self.assertListEqual(a_solve('3,0,4,0,99'), [1, 0, 4, 0, 99])
