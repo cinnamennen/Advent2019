@@ -1,9 +1,10 @@
 from __future__ import annotations
 import pprint
-from copy import copy
+import threading
 from dataclasses import dataclass, field
 from functools import reduce
-from typing import List, Tuple, Set, Iterator
+from queue import Queue
+from typing import List
 from itertools import permutations
 
 from tqdm import tqdm
@@ -13,13 +14,13 @@ pp = pprint.PrettyPrinter(indent=4)
 
 @dataclass
 class Computer:
-    memory: List[int] = field(default_factory=list)
+    data_in: Queue
+    data_out: Queue
+    memory: List[int]
     position: int = 0
     broken: bool = field(default=False, init=False)
     mode: List[int] = field(default_factory=list, init=False)
     args: List[int] = field(default_factory=list, init=False)
-    hard_input: List[int] = field(default_factory=list)
-    accumulated_output: List[int] = field(default_factory=list, init=False)
 
     # @property
     # def position(self) -> int:
@@ -73,17 +74,15 @@ class Computer:
 
     def _input(self):
         position = self.read()
-
-        if not self.hard_input:
-            self.memory[position] = int(input(">"))
-        else:
-            self.memory[position] = self.hard_input.pop(0)
+        self.memory[position] = self.data_in.get()
 
         # print(f'writing {self.memory[position]} to {position}')
         self.args = []
 
     def output(self):
-        self.accumulated_output += self.args
+        while self.args:
+            self.data_out.put(self.args.pop(0))
+        self.data_in.task_done()
         # print(f'reading {self.memory[position]} from {position}')
         self.args = []
 
@@ -146,7 +145,7 @@ class Computer:
         while not self.broken:
             self.iterate()
             # print(self.memory, self.position)
-        return self.accumulated_output
+        # return self.accumulated_output
 
     mapping = {
         1: add,
@@ -176,12 +175,8 @@ def get_input(data: str = None):
     return data
 
 
-def get_ranges() -> Iterator[Tuple[int, ...]]:
-    return permutations((0, 1, 2, 3, 4))
-
-
-def solve(data=None):
-    ranges = get_ranges()
+def solve(var, data=None):
+    ranges = permutations(var)
     best = -1
     for test in tqdm(ranges):
         output = soft_solve(data, test)
@@ -192,17 +187,32 @@ def solve(data=None):
 
 
 def soft_solve(data, settings: List[int]):
-    output = 0
+    old = Queue()
+
+    first = True
+    computers = []
     for setting in settings:
-        amp = Computer(memory=get_input(data))
-        amp.hard_input = [setting, output]
-        output = amp.run()
-        output = output[0]
-    return output
+        new = Queue()
+        old.put(setting)
+        if first:
+            old.put(0)
+            first = False
+        c = Computer(old, new, get_input(data))
+        old = new
+        computers.append(c)
+    computers[-1].data_out = computers[0].data_in
+
+    threads = [threading.Thread(target=c.run) for c in computers]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+    return computers[-1].data_out.get()
 
 
 def main():
-    print(solve())
+    print(solve((5, 6, 7, 8, 9)))
 
 
 if __name__ == "__main__":
