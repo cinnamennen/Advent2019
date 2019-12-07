@@ -6,7 +6,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 
 def process_input():
-    file = 'a.txt'
+    file = "a.txt"
     data = [_.strip() for _ in open(file).readlines()]
     return data
 
@@ -35,5 +35,5 @@ def main():
     print(solve(get_input()))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

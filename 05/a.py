@@ -43,11 +43,11 @@ class Computer:
             elif mode == 1:
                 self.args.append(self.read())
             else:
-                raise RuntimeError(f'{mode} is not a valid mode')
+                raise RuntimeError(f"{mode} is not a valid mode")
 
     def add(self):
         if not self.args:
-            raise RuntimeError('Need arguments to add')
+            raise RuntimeError("Need arguments to add")
         position = self.read()
         self.memory[position] = reduce(lambda x, y: x + y, self.args)
         # print(f'writing to {position}, {self.memory[position]}')
@@ -55,7 +55,7 @@ class Computer:
 
     def multiply(self):
         if not self.args:
-            raise RuntimeError('Need arguments to multiply')
+            raise RuntimeError("Need arguments to multiply")
         position = self.read()
         self.memory[position] = reduce(lambda x, y: x * y, self.args)
         # print(f'writing to {position}, {self.memory[position]}')
@@ -108,25 +108,13 @@ class Computer:
         while not self.broken:
             self.iterate()
 
-    mapping = {
-        1: add,
-        2: multiply,
-        3: _input,
-        4: output,
-        99: halt
-    }
+    mapping = {1: add, 2: multiply, 3: _input, 4: output, 99: halt}
 
-    num_args = {
-        1: 2,
-        2: 2,
-        3: 0,
-        4: 1,
-        99: 0
-    }
+    num_args = {1: 2, 2: 2, 3: 0, 4: 1, 99: 0}
 
 
 def process_input():
-    file = 'a.txt'
+    file = "a.txt"
     data = [_.strip() for _ in open(file).readlines()]
     return data
 
@@ -134,7 +122,7 @@ def process_input():
 def get_input(data: str = None):
     if not data:
         data = process_input()[0]
-    data = list(map(int, data.split(',')))
+    data = list(map(int, data.split(",")))
     return Computer(memory=data)
 
 
@@ -153,5 +141,5 @@ def main():
     solve()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

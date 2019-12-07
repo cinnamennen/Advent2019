@@ -17,7 +17,7 @@ class Computer:
     mode: List[int] = field(default_factory=list)
     args: List[int] = field(default_factory=list)
     hard_input: int = None
-    accumulated_output = ''
+    accumulated_output = ""
 
     @property
     def position(self) -> int:
@@ -45,11 +45,11 @@ class Computer:
             elif mode == 1:
                 self.args.append(self.read())
             else:
-                raise RuntimeError(f'{mode} is not a valid mode')
+                raise RuntimeError(f"{mode} is not a valid mode")
 
     def add(self):
         if not self.args:
-            raise RuntimeError('Need arguments to add')
+            raise RuntimeError("Need arguments to add")
         position = self.read()
         self.memory[position] = reduce(lambda x, y: x + y, self.args)
         # print(f'writing to {position}, {self.memory[position]}')
@@ -57,7 +57,7 @@ class Computer:
 
     def multiply(self):
         if not self.args:
-            raise RuntimeError('Need arguments to multiply')
+            raise RuntimeError("Need arguments to multiply")
         position = self.read()
         self.memory[position] = reduce(lambda x, y: x * y, self.args)
         # print(f'writing to {position}, {self.memory[position]}')
@@ -70,7 +70,7 @@ class Computer:
         position = self.read()
 
         if self.hard_input is None:
-            self.memory[position] = int(input('>'))
+            self.memory[position] = int(input(">"))
         else:
             self.memory[position] = self.hard_input
 
@@ -93,7 +93,7 @@ class Computer:
 
     def jit(self):
         if len(self.args) != 2:
-            raise RuntimeError('Need arguments to jit')
+            raise RuntimeError("Need arguments to jit")
         if self.args[0] != 0:
             # print(f'jumping to {self.args[1]} because {self.args[0]} != {0}')
             self.position = self.args[1]
@@ -101,7 +101,7 @@ class Computer:
 
     def jif(self):
         if len(self.args) != 2:
-            raise RuntimeError('Need arguments to jif')
+            raise RuntimeError("Need arguments to jif")
         if self.args[0] == 0:
             # print(f'jumping to {self.args[1]} because {self.args[0]} == {0}')
             self.position = self.args[1]
@@ -109,14 +109,14 @@ class Computer:
 
     def lt(self):
         if len(self.args) != 2:
-            raise RuntimeError('Need arguments to lt')
+            raise RuntimeError("Need arguments to lt")
         position = self.read()
         self.memory[position] = 1 if self.args[0] < self.args[1] else 0
         self.args = []
 
     def eq(self):
         if len(self.args) != 2:
-            raise RuntimeError('Need arguments to lt')
+            raise RuntimeError("Need arguments to lt")
         position = self.read()
         self.memory[position] = 1 if self.args[0] == self.args[1] else 0
         self.args = []
@@ -153,24 +153,14 @@ class Computer:
         6: jif,
         7: lt,
         8: eq,
-        99: halt
+        99: halt,
     }
 
-    num_args = {
-        1: 2,
-        2: 2,
-        3: 0,
-        4: 1,
-        5: 2,
-        6: 2,
-        7: 2,
-        8: 2,
-        99: 0
-    }
+    num_args = {1: 2, 2: 2, 3: 0, 4: 1, 5: 2, 6: 2, 7: 2, 8: 2, 99: 0}
 
 
 def process_input():
-    file = 'a.txt'
+    file = "a.txt"
     data = [_.strip() for _ in open(file).readlines()]
     return data
 
@@ -178,7 +168,7 @@ def process_input():
 def get_input(data: str = None):
     if not data:
         data = process_input()[0]
-    data = list(map(int, data.split(',')))
+    data = list(map(int, data.split(",")))
     return data
 
 
@@ -196,5 +186,5 @@ def main():
     print(solve(None, 5))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

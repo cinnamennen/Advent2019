@@ -11,7 +11,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 
 def process_input():
-    file = 'a.txt'
+    file = "a.txt"
     data = [_.strip() for _ in open(file).readlines()]
     return data
 
@@ -20,7 +20,7 @@ def get_input(data: List[str] = None):
     if not data:
         data = process_input()
 
-    data = [d.split(')') for d in data]
+    data = [d.split(")") for d in data]
 
     G = nx.Graph()
     for b, a in data:
@@ -31,7 +31,7 @@ def get_input(data: List[str] = None):
 def solve(data=None) -> int:
     graph = get_input(data)
     # print(graph.nodes)
-    distance = nx.shortest_path_length(graph, 'SAN', 'YOU')
+    distance = nx.shortest_path_length(graph, "SAN", "YOU")
 
     return distance - 2
 
@@ -40,5 +40,5 @@ def main():
     print(solve())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

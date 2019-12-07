@@ -12,7 +12,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 
 def process_input() -> List[str]:
-    file = 'a.txt'
+    file = "a.txt"
     data = [_.strip() for _ in open(file).readlines()]
     return data
 
@@ -20,7 +20,7 @@ def process_input() -> List[str]:
 def get_input(data: List[str] = None):
     if not data:
         data = process_input()
-    data = [x.split('-') for x in data]
+    data = [x.split("-") for x in data]
     data = data[0]
     data = list(map(int, data))
 
@@ -28,7 +28,7 @@ def get_input(data: List[str] = None):
 
 
 def test(password: str) -> bool:
-    pat = re.compile(r'.*(\d)\1.*')
+    pat = re.compile(r".*(\d)\1.*")
     if not re.match(pat, password):
         return False
     orig = list(map(int, list(password)))
@@ -52,5 +52,5 @@ def main():
     print(solve())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

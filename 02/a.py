@@ -50,15 +50,11 @@ class Computer:
         while not self.broken:
             self.iterate()
 
-    mapping = {
-        1: add,
-        2: multiply,
-        99: halt
-    }
+    mapping = {1: add, 2: multiply, 99: halt}
 
 
 def process_input():
-    file = 'a.txt'
+    file = "a.txt"
     data = [_.strip() for _ in open(file).readlines()]
     return data
 
@@ -66,7 +62,7 @@ def process_input():
 def get_input(data: str = None):
     if not data:
         data = process_input()[0]
-    data = list(map(int, data.split(',')))
+    data = list(map(int, data.split(",")))
     return Computer(memory=data)
 
 
@@ -88,5 +84,5 @@ def main():
     print(solve())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

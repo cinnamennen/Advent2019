@@ -1,8 +1,8 @@
 import importlib
 import unittest
 
-a_fuel = getattr(importlib.import_module('01.a'), 'get_fuel')
-b_fuel = getattr(importlib.import_module('01.b'), 'get_fuel')
+a_fuel = getattr(importlib.import_module("01.a"), "get_fuel")
+b_fuel = getattr(importlib.import_module("01.b"), "get_fuel")
 
 
 class TestAExamples(unittest.TestCase):

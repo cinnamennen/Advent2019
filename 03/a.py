@@ -11,16 +11,14 @@ pp = pprint.PrettyPrinter(indent=4)
 
 
 def process_input() -> List[str]:
-    file = 'a.txt'
+    file = "a.txt"
     data = [_.strip() for _ in open(file).readlines()]
     return data
 
 
 Instruction = Tuple[str, int]
 
-short_mapping = {
-    'L': 'left', 'R': 'right', 'U': 'up', 'D': 'down'
-}
+short_mapping = {"L": "left", "R": "right", "U": "up", "D": "down"}
 
 
 def split_instruction(s: str) -> Instruction:
@@ -30,7 +28,7 @@ def split_instruction(s: str) -> Instruction:
 def get_input(data: List[str] = None):
     if not data:
         data = process_input()
-    data = [x.split(',') for x in data]
+    data = [x.split(",") for x in data]
     data = [list(map(split_instruction, x)) for x in data]
 
     return data
@@ -68,5 +66,5 @@ def main():
     print(solve())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

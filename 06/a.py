@@ -11,7 +11,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 
 def process_input():
-    file = 'a.txt'
+    file = "a.txt"
     data = [_.strip() for _ in open(file).readlines()]
     return data
 
@@ -20,7 +20,7 @@ def get_input(data: List[str] = None):
     if not data:
         data = process_input()
 
-    data = [d.split(')') for d in data]
+    data = [d.split(")") for d in data]
 
     G = nx.DiGraph()
     for b, a in data:
@@ -33,7 +33,7 @@ def solve(data=None) -> int:
     distance = 0
     # print(graph.nodes)
     for n in graph.nodes:
-        d = nx.shortest_path_length(graph, n, 'COM')
+        d = nx.shortest_path_length(graph, n, "COM")
         # print(f'distance between COM and {n} is {d}')
         distance += d
     return distance
@@ -43,5 +43,5 @@ def main():
     print(solve())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
