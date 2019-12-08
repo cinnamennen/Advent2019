@@ -27,6 +27,7 @@ def solve(x, y, data=None) -> int:
     layers = get_input(data)
     return layers
 
+
 def main():
     print(solve(25, 6))
 
