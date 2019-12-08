@@ -18,14 +18,22 @@ def process_input():
 
 def get_input(data: List[str] = None):
     if not data:
-        data = process_input()
+        data = process_input()[0]
 
-    return data
+    return list(map(int, data))
 
 
 def solve(x, y, data=None) -> int:
-    layers = get_input(data)
-    return layers
+    picture = get_input(data)
+    pixel_count = x * y
+    layers = [picture[i:i + pixel_count] for i in range(0, len(picture), pixel_count)]
+    best = layers.pop(0)
+    while layers:
+        compare = layers.pop(0)
+        if compare.count(0) < best.count(0):
+            best = compare
+
+    return best.count(1) * best.count(2)
 
 
 def main():
