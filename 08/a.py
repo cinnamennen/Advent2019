@@ -26,7 +26,7 @@ def get_input(data: List[str] = None):
 def solve(x, y, data=None) -> int:
     picture = get_input(data)
     pixel_count = x * y
-    layers = [picture[i:i + pixel_count] for i in range(0, len(picture), pixel_count)]
+    layers = [picture[i : i + pixel_count] for i in range(0, len(picture), pixel_count)]
     best = layers.pop(0)
     while layers:
         compare = layers.pop(0)
