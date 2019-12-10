@@ -36,13 +36,15 @@ def pre_raster(x, y, data=None) -> List[List[int]]:
 def get_layers(x, y, data=None) -> List[List[int]]:
     picture = get_input(data)
     pixel_count = x * y
-    layers = [picture[i: i + pixel_count] for i in range(0, len(picture), pixel_count)]
+    layers = [picture[i : i + pixel_count] for i in range(0, len(picture), pixel_count)]
     return layers
 
 
 def soft_solve(x, y, data=None) -> List[int]:
     raster = pre_raster(x, y, data)
-    raster = list(map(lambda x: list(filter(lambda y: y != 2, x)), raster))  # Strip out transparent pixels
+    raster = list(
+        map(lambda x: list(filter(lambda y: y != 2, x)), raster)
+    )  # Strip out transparent pixels
 
     image = [r[0] if r else None for r in raster]
 
@@ -51,11 +53,7 @@ def soft_solve(x, y, data=None) -> List[int]:
 
 def solve(x, y):
     picture = soft_solve(x, y)
-    mapping = {
-        1: '█',
-        0: ' ',
-        None: '░'
-    }
+    mapping = {1: "█", 0: " ", None: "░"}
     picture = [mapping[p] for p in picture]
     image = []
     while picture:
@@ -63,7 +61,7 @@ def solve(x, y):
         for _ in range(x):
             temp.append(picture.pop(0))
 
-        image.append(''.join(temp))
+        image.append("".join(temp))
     for row in image:
         print(row)
 
