@@ -279,9 +279,17 @@ class Robot:
         min_y = min(map(lambda p: p.y, self.hull.keys()))
         max_x = max(map(lambda p: p.x, self.hull.keys()))
         max_y = max(map(lambda p: p.y, self.hull.keys()))
-        for y in range(max_y, min_y-1, -1):
-            for x in range(min_x, max_x+1):
-                print("█" if self.hull[Point(x, y)] != Paint.BLACK else " ", end='')
+        for y in range(max_y, min_y - 1, -1):
+            for x in range(min_x, max_x + 1):
+                if Point(x, y) in self.hull:
+                    if self.hull[Point(x, y)] == Paint.BLACK:
+                        print("██", end='')
+                    else:
+                        print("░░", end='')
+
+                else:
+                    print("▒▒", end='')
+
             print()
 
     def run(self):
