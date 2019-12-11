@@ -31,8 +31,10 @@ def get_input(data: List[str] = None) -> Set[Point]:
 
 def solve(data=None) -> int:
     asteroids = get_input(data)
-    relative = max(
-        len(
+    best = 0
+    coords = Point(0, 0)
+    for asteroid in tqdm(asteroids):
+        count = len(
             set(
                 map(
                     lambda x: x.y,
@@ -45,9 +47,10 @@ def solve(data=None) -> int:
                 )
             )
         )
-        for asteroid in tqdm(asteroids)
-    )
-    return relative
+        if count > best:
+            best = count
+            coords = asteroid
+    return best
 
 
 def main():
