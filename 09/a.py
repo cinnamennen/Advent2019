@@ -18,7 +18,7 @@ class Memory(list):
             return super().__getitem__(key)
         except IndexError:
             missing = key - (len(self) - 1)
-            self += [0]*missing
+            self += [0] * missing
             return super().__getitem__(key)
 
     def __setitem__(self, key, value):
@@ -26,7 +26,7 @@ class Memory(list):
             return super().__setitem__(key, value)
         except IndexError:
             missing = key - (len(self) - 1)
-            self += [0]*missing
+            self += [0] * missing
             return super().__setitem__(key, value)
 
 
