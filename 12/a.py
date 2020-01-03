@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pprint
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from itertools import combinations
 from typing import List
 
@@ -14,7 +14,12 @@ debug = False
 @dataclass
 class Moon:
     position: Point
-    velocity: Point = zero_point(3)
+    velocity: Point = None
+
+    def __post_init__(self):
+        if not self.velocity:
+            self.velocity = zero_point(len(self.position))
+        self.initial_position = self.position
 
     def apply_gravity(self, other: Moon):
         """
@@ -49,6 +54,10 @@ class Moon:
     @property
     def total_energy(self) -> int:
         return self.kinetic_energy * self.potential_energy
+
+    @property
+    def at_start(self) -> bool:
+        return self.velocity == self.velocity.zero_point() and self.position == self.initial_position
 
 
 def read_input():
