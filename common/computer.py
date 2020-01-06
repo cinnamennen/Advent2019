@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List
-from queue import Queue
+from multiprocessing import Queue
 
 debug = False
 
@@ -206,6 +206,9 @@ class Computer:
             self.iterate()
             # print(self.memory, self.position)
         return "\n".join(map(str, list(self.data_out.queue)))
+
+    def kill(self):
+        self.broken = True
 
     mapping = {
         1: add,
