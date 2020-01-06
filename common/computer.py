@@ -70,9 +70,6 @@ class Computer:
         temp = self.mode.pop()
         while self.mode:
             self.args.append(self.get_arg(self.mode.pop(0), self.read()))
-            # print(f'added arg {self.args[-1]}')
-
-        # print(f'after pre-parsing, args are {self.args}')
 
         if not self.doing_input:
             self.args.append(self.get_arg(temp, self.read()))
