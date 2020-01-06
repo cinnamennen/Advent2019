@@ -21,18 +21,6 @@ class TileType(Enum):
     BALL = 4
 
 
-@dataclass
-class Tile:
-    position: Point
-    tile_id: TileType
-
-
-class Joystick(Enum):
-    NEUTRAL = 0
-    LEFT = -1
-    RIGHT = 1
-
-
 def read_input():
     file = "input.txt"
     with open(file) as f:
