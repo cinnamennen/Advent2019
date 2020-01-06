@@ -86,11 +86,26 @@ def get_cost(work: SimpleQueue, recipe_book: Dict[str, Recipe], extra: Dict[str,
 
 
 def solve(data=None):
+    ore_available = 1000000000000
+    works = 1
+    too_high = ore_available
     recipes = parse_input(data)
-    work = SimpleQueue()
-    work.put(Component("FUEL", 1))
-    extra: Dict[str, int] = defaultdict(int)
 
+    while (too_high - works) > 1:
+        to_check = works + ((too_high - works) // 2)
+        cost = soft_solve(recipes, to_check)
+        if cost > ore_available:
+            too_high = to_check
+        else:
+            works = to_check
+
+    return works
+
+
+def soft_solve(recipes, amount):
+    work = SimpleQueue()
+    work.put(Component("FUEL", amount))
+    extra: Dict[str, int] = defaultdict(int)
     cost = get_cost(work, recipes, extra)
     return cost
 
