@@ -7,6 +7,7 @@ from enum import Enum
 from typing import Dict, Any
 
 from cinnamon_tools.point import Point
+
 from common.computer import computer_from_string, Computer
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -50,12 +51,15 @@ def parse_input(data: str = None):
 def solve(data=None):
     program = parse_input(data)
     c: Computer = computer_from_string(program)
+    # c.memory[0] = 2
     threading.Thread(target=c.run).start()
     tiles: Dict[Point, TileType] = {}
+    i = 0
     while not (c.broken and c.data_out.empty()):
+        # print()
         x, y, t = c.data_out.get(), c.data_out.get(), c.data_out.get()
         tiles[Point(x, y)] = TileType(t)
-    return len(list(filter(lambda tile: tile == TileType.BLOCK, tiles.values())))
+    return len(list(filter(lambda t: t == TileType.BLOCK, tiles.values())))
 
 
 def main():
