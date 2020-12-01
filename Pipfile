@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 networkx = "*"
 cinnamon_tools = "*"
+tqdm = "*"
 
 [dev-packages]
 
